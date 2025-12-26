@@ -1,5 +1,7 @@
 # Opencode config
 
+Currently testing the [Agentic Dev Starter](https://agentrules.directory/rules/bcheung/agentic-dev-starter/opencode)
+
 ## API Slugs
 
 [Google](https://ai.google.dev/gemini-api/docs)
