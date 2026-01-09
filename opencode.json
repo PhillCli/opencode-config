@@ -6,7 +6,8 @@
     "AGENTS.md"
   ],
   "plugin": [
-    "opencode-supermemory"
+    "opencode-supermemory",
+    "opencode-anthropic-auth"
   ],
   "model": "anthropic/claude-opus-4-5",
   "small_model": "anthropic/claude-sonnet-4-5",
@@ -111,6 +112,10 @@
     "edit": "allow",
     "skill": "allow",
     "webfetch": "allow",
+    "external_directory": {
+      "*": "ask",
+      "/tmp": "allow"
+    },
     "bash": {
       "*": "allow",
       "git push": "ask",
