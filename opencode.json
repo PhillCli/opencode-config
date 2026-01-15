@@ -114,7 +114,7 @@
     "webfetch": "allow",
     "external_directory": {
       "*": "ask",
-      "/tmp": "allow"
+      "/tmp*": "allow"
     },
     "bash": {
       "*": "allow",
