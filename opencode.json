@@ -12,6 +12,9 @@
   "model": "anthropic/claude-opus-4-5",
   "small_model": "anthropic/claude-sonnet-4-5",
   "agent": {
+    "smart": {
+      "prompt": "{file:./agent/smart.md}"
+    },
     "plan": {
       "model": "anthropic/claude-opus-4-5"
     },

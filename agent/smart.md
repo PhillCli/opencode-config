@@ -8,7 +8,7 @@ tools:
   read: true
   edit: true
   write: true
-  patch: false
+  patch: true
   grep: true
   glob: true
   list: true
