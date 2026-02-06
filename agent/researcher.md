@@ -1,14 +1,14 @@
 ---
 description: Fetches and analyzes web content from URLs. Use for external documentation, best practices, API docs, and online resources. Do NOT use for internal codebase exploration or when you already have the specific URL.
 mode: subagent
-model: anthropic/claude-sonnet-4-5
+model: anthropic/claude-haiku-4-5
 temperature: 0.1
 tools:
   bash: false
   read: true
   edit: false
   write: true
-  patch: false
+  patch: true
   grep: true
   glob: true
   list: true

@@ -9,53 +9,17 @@
     "opencode-supermemory",
     "opencode-anthropic-auth"
   ],
-  "model": "anthropic/claude-opus-4-5",
+  "model": "anthropic/claude-opus-4-6",
   "small_model": "anthropic/claude-sonnet-4-5",
   "agent": {
     "smart": {
       "prompt": "{file:./agent/smart.md}"
     },
     "plan": {
-      "model": "anthropic/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-6"
     },
     "build": {
       "model": "anthropic/claude-sonnet-4-5"
-    },
-    "Analyze": {
-      "model": "google/gemini-3-pro-preview",
-      "prompt": "{file:./prompts/analyze.md}",
-      "tools": {
-        "bash": true,
-        "edit": false,
-        "write": false,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "lsp": true,
-        "patch": false,
-        "skill": true,
-        "todowrite": false,
-        "todoread": false,
-        "webfetch": true
-      }
-    },
-    "Q&A": {
-      "model": "xai/grok-4-1-fast",
-      "prompt": "{file:./prompts/qa.md}",
-      "tools": {
-        "bash": true,
-        "edit": false,
-        "write": false,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": false,
-        "todoread": false,
-        "webfetch": true
-      }
     }
   },
   "formatter": {

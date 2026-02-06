@@ -43,7 +43,7 @@ List each with brief description:
 - You control git - agent won't auto-commit
 
 ### 5. Customization
-- `AGENT_RULES.md` - Add project-specific rules
+- `AGENTS.md` - Add project-specific rules
 - `agent/` - Modify subagent behavior
 - `command/` - Add or edit commands
 

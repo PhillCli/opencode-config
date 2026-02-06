@@ -3,4 +3,4 @@
 	url = https://github.com/antonbabenko/terraform-skill
 [submodule "skill/terragrunt-skill"]
 	path = skill/terragrunt-skill
-	url = git@github.com:jfr992/terragrunt-skill.git
+	url = https://github.com/jfr992/terragrunt-skill.git
