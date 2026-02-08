@@ -1,7 +1,7 @@
 ---
 description: Intelligent agent that understands user intent and chooses the right approach - whether to plan, ask for clarification, or build directly. Use for tasks where the best workflow isn't immediately obvious.
 mode: primary
-model: anthropic/claude-opus-4-6
+model: anthropic/claude-opus-4-5
 temperature: 0.3
 tools:
   bash: true
