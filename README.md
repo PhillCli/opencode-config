@@ -4,6 +4,7 @@ Currently testing:
 
 - [Agentic Dev Starter](https://agentrules.directory/rules/bcheung/agentic-dev-starter/opencode)
 - [Supermemory](https://supermemory.ai/) with [opencode plugin](https://github.com/supermemoryai/opencode-supermemory)
+- **Kimi k2.5** as primary agent model
 
 ## Agentic Dev Starter
 
@@ -38,4 +39,4 @@ Update them with:
 ## API Slugs
 
 - [Google](https://ai.google.dev/gemini-api/docs)
-- [Anthropic](https://docs.anthropic.com/en/docs/about-claude/models/overview)
+- [Kimi for Coding](https://platform.moonshot.cn/docs)
