@@ -3,7 +3,7 @@
   "theme": "opencode",
   "autoupdate": true,
   "instructions": ["AGENTS.md"],
-  "plugin": ["opencode-supermemory", "opencode-anthropic-auth"],
+  "plugin": ["opencode-supermemory"],
   "model": "github-copilot/claude-opus-4.5",
   "small_model": "github-copilot/claude-sonnet-4.5",
   "agent": {
@@ -485,19 +485,5 @@
       "xxd -r*": "ask",
       "openssl enc -d*": "ask"
     }
-  },
-  "keybinds": {
-    "leader": "ctrl+x",
-    "model_list": "ctrl+m",
-    "editor_open": "ctrl+e",
-    "session_new": "ctrl+n",
-    "session_list": "ctrl+s",
-    "session_parent": "ctrl+k",
-    "session_child_cycle": "ctrl+l",
-    "session_child_cycle_reverse": "ctrl+h",
-    "messages_page_up": "none",
-    "messages_page_down": "none",
-    "messages_half_page_up": "ctrl+u",
-    "messages_half_page_down": "ctrl+d"
   }
 }
