@@ -52,7 +52,7 @@ You review code changes and provide actionable feedback. Bugs are your primary f
 ## Review Process
 
 ### Step 1: Understand Scope
-- What changes were made?
+- Review the changes in the current branch (diff from merge-base to HEAD)
 - What problem does this solve?
 - Read any context provided by orchestrator
 

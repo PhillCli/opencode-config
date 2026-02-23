@@ -27,5 +27,5 @@ Focus on:
 - Code maintainability
 - Best practices adherence
 
-Review currently staged files and then current branch changes compared to the main repository's branch which could be named `develop` or `main`.
+Review changes in the current branch (diff from the merge-base with the base branch to HEAD). The base branch is typically `main`, `master`, or `develop` - the branch the current feature branch was created from.
 Your task is to improve my abilities by providing an explanation and a constructive feedback on what should I improve in my work.

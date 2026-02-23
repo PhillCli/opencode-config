@@ -9,7 +9,11 @@ Help me review code changes for quality, correctness, and best practices.
 ## Workflow
 
 1. **Gather context** - Understand what changed:
-   - Run `git status` and `git diff` to see my changes
+   - Run `git status` and `git log --oneline -5` to see current state
+   - Determine base branch (where current branch was branched from):
+     - Try: `git rev-parse --abbrev-ref HEAD@{upstream} 2>/dev/null || echo "main"`
+     - If no upstream, try: `git show-ref --verify --quiet refs/heads/main && echo "main" || echo "master"`
+   - Run `git diff $(git merge-base HEAD <base-branch>)..HEAD` to see branch changes
    - Ask me what the purpose of these changes is
 
 2. **Run automated checks** - Execute in parallel:
