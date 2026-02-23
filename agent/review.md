@@ -28,4 +28,7 @@ Focus on:
 - Best practices adherence
 
 Review changes in the current branch (diff from the merge-base with the base branch to HEAD). The base branch is typically `main`, `master`, or `develop` - the branch the current feature branch was created from.
+
+**CRITICAL: DO NOT review untracked files.** Only review committed changes in the current branch.
+
 Your task is to improve my abilities by providing an explanation and a constructive feedback on what should I improve in my work.
