@@ -3,8 +3,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="$(dirname "$SCRIPT_DIR")/skill"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+SKILL_DIR="$REPO_ROOT/skill"
 
+# URL-based skills (sparse checkout)
 SKILLS=(
 	"https://github.com/anthropics/skills/tree/main/skills/skill-creator"
 )
@@ -31,3 +33,14 @@ for url in "${SKILLS[@]}"; do
 	fi
 	rm -rf "$tmp_dir"
 done
+
+# Update git submodules
+echo "Updating git submodules..."
+git -C "$REPO_ROOT" submodule update --remote --merge
+git -C "$REPO_ROOT" submodule status | while read -r hash path rest; do
+	skill_name="$(basename "$path")"
+	echo "  Updated: $skill_name (${hash:0:7})"
+done
+
+echo ""
+echo "To commit changes: git add -A && git commit -m \"chore: update skills\""
