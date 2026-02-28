@@ -37,6 +37,7 @@ done
 # Update git submodules
 echo "Updating git submodules..."
 git -C "$REPO_ROOT" submodule update --remote --merge
+git -C "$REPO_ROOT" submodule foreach --quiet 'git fetch --tags 2>/dev/null || true'
 git -C "$REPO_ROOT" submodule status | while read -r hash path rest; do
 	skill_name="$(basename "$path")"
 	echo "  Updated: $skill_name (${hash:0:7})"
