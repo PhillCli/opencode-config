@@ -1,6 +1,6 @@
 ---
 name: glab-cli
-description: "GitLab CLI (glab) for managing merge requests, CI/CD pipelines, releases, and repositories from the terminal. Use when user says 'glab', 'gitlab cli', 'merge request', 'MR', 'pipeline status', 'ci trace', 'gitlab release', asks to create/review/approve MRs, check pipeline status, view CI logs, manage GitLab releases, clone/fork GitLab repos, or any GitLab repository management from CLI. Covers glab mr, glab ci, glab release, glab repo commands. Extensions available for configuration/auth, advanced CI/CD, raw API access, and other commands (issues, variables, snippets, labels, schedules)."
+description: "GitLab CLI (glab) for managing merge requests, CI/CD pipelines, releases, repositories, and wiki pages from the terminal. Use when user says 'glab', 'gitlab cli', 'merge request', 'MR', 'pipeline status', 'ci trace', 'gitlab release', asks to create/review/approve MRs, check pipeline status, view CI logs, manage GitLab releases, clone/fork GitLab repos, search/download GitLab wiki pages, or provides a GitLab URL containing '/-/wikis/'. Covers glab mr, glab ci, glab release, glab repo, and glab api wiki workflows. Extensions available for configuration/auth, advanced CI/CD, raw API access, and other commands (issues, variables, snippets, labels, schedules)."
 ---
 
 # GitLab CLI (glab)
@@ -303,12 +303,103 @@ glab repo transfer --target-namespace new-group # moves project
 glab repo delete OWNER/REPO --yes              # permanent deletion
 ```
 
+## Wiki Pages (search + download)
+
+Use this workflow whenever the user asks to find/search/download wiki pages, shares a GitLab URL with `/-/wikis/`, or asks for wiki markdown export.
+
+### Detect wiki type from URL
+
+- Group wiki URL pattern: `https://<host>/groups/<group_path>/-/wikis/<slug...>`
+  - Use API endpoints: `/groups/:id/wikis` and `/groups/:id/wikis/:slug`
+- Project wiki URL pattern: `https://<host>/<namespace>/<project>/-/wikis/<slug...>`
+  - Use API endpoints: `/projects/:id/wikis` and `/projects/:id/wikis/:slug`
+
+### Preflight for wiki operations
+
+```bash
+glab auth status
+```
+
+### Search wiki pages by title/slug (group wiki)
+
+```bash
+GROUP_PATH='my-group/my-subgroup'
+GROUP_ID_ENC=$(jq -rn --arg s "$GROUP_PATH" '$s|@uri')
+KEYWORD='some-keyword'
+
+glab api "groups/$GROUP_ID_ENC/wikis" --paginate --output ndjson \
+| jq -r --arg kw "$KEYWORD" '
+  select(((.title + " " + .slug) | ascii_downcase) | contains($kw | ascii_downcase))
+  | "\(.title)\t\(.slug)"'
+```
+
+### Search wiki pages including content (group wiki)
+
+```bash
+GROUP_PATH='my-group/my-subgroup'
+GROUP_ID_ENC=$(jq -rn --arg s "$GROUP_PATH" '$s|@uri')
+KEYWORD='some-keyword'
+
+glab api "groups/$GROUP_ID_ENC/wikis?with_content=1" --paginate --output ndjson \
+| jq -r --arg kw "$KEYWORD" '
+  select(((.title + " " + .slug + " " + (.content // "")) | ascii_downcase) | contains($kw | ascii_downcase))
+  | "\(.title)\t\(.slug)"'
+```
+
+### Download a specific wiki page (JSON + markdown)
+
+```bash
+GROUP_PATH='my-group/my-subgroup'
+SLUG='Home/Section/Page-Title'
+OUT_BASE='page-title'
+
+GROUP_ID_ENC=$(jq -rn --arg s "$GROUP_PATH" '$s|@uri')
+SLUG_ENC=$(jq -rn --arg s "$SLUG" '$s|@uri')
+
+glab api "groups/$GROUP_ID_ENC/wikis/$SLUG_ENC" > "$OUT_BASE.json"
+jq -r '.content' "$OUT_BASE.json" > "$OUT_BASE.md"
+```
+
+### Download from project wiki (same flow, different endpoint)
+
+```bash
+PROJECT_PATH='my-group/my-project'
+SLUG='Home/Runbook/Production'
+OUT_BASE='production-runbook'
+
+PROJECT_ID_ENC=$(jq -rn --arg s "$PROJECT_PATH" '$s|@uri')
+SLUG_ENC=$(jq -rn --arg s "$SLUG" '$s|@uri')
+
+glab api "projects/$PROJECT_ID_ENC/wikis/$SLUG_ENC" > "$OUT_BASE.json"
+jq -r '.content' "$OUT_BASE.json" > "$OUT_BASE.md"
+```
+
+### Optional: export rendered HTML
+
+```bash
+glab api "groups/$GROUP_ID_ENC/wikis/$SLUG_ENC?render_html=true" \
+| jq -r '.content_html // .html // .content' > "$OUT_BASE.html"
+```
+
+### Wiki decision tree
+
+| Need | Command/Endpoint |
+|------|------------------|
+| List all group wiki pages | `glab api "groups/<group-id-enc>/wikis"` |
+| List all project wiki pages | `glab api "projects/<project-id-enc>/wikis"` |
+| Search by keyword | list endpoint + `jq` filter |
+| Download exact wiki page | `.../wikis/<slug-enc>` then write `.json` + `.md` |
+| Rendered output for publishing | add `?render_html=true` |
+
 ## Common Errors → Fix
 
 | Error | Cause | Fix |
 |-------|-------|-----|
 | `401 Unauthorized` | Token expired/missing | `glab auth login` or check `GITLAB_TOKEN` |
 | `404 Project Not Found` | Wrong repo/host or no access | Verify `-R` path, check `glab auth status` |
+| `404 Wiki Page Not Found` | Wrong endpoint family (`groups` vs `projects`) | Map URL type first, then retry with correct endpoint |
+| `404` for nested wiki path | Wiki slug not URL-encoded | Encode slug with `jq -rn --arg s "$SLUG" '$s|@uri'` |
+| `403` on group wiki API | Missing access or feature not available on plan | Verify group membership, token scope, and instance plan/tier |
 | `could not determine source branch` | Branch not pushed | Push branch first, or use `--push` / `-f` |
 | `merge request already exists` | MR exists for this source→target | Use `glab mr list -s <branch>` to find it |
 | TLS/certificate errors | Self-signed cert or mTLS | Load [references/configuration.md](references/configuration.md) |
@@ -325,6 +416,8 @@ glab repo delete OWNER/REPO --yes              # permanent deletion
 - NEVER use `glab release delete` without confirming tag deletion intent — `--with-tag` deletes the git tag too
 - NEVER confuse `glab ci retry` (retries a job) with retrying an entire pipeline — use `glab ci run` to start a new pipeline
 - NEVER confuse `glab ci trigger` (triggers manual jobs) with `glab ci run-trig` (runs pipeline with trigger token)
+- NEVER use `/projects/:id/wikis` for a group wiki URL (`/groups/.../-/wikis/...`) — use `/groups/:id/wikis`
+- NEVER pass raw wiki slug with `/` directly into API path — URL-encode slug first
 
 ## Extension Loading
 
@@ -346,6 +439,7 @@ glab repo delete OWNER/REPO --yes              # permanent deletion
 
 **Load [references/api-and-advanced.md](references/api-and-advanced.md) when:**
 - Making raw GitLab API calls (`glab api`)
+- Working with wiki API endpoints (`/groups/:id/wikis`, `/projects/:id/wikis`)
 - GraphQL queries
 - Pagination of large result sets
 - Creating aliases
