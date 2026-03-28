@@ -3,16 +3,15 @@
 Currently testing:
 
 - [Agentic Dev Starter](https://agentrules.directory/rules/bcheung/agentic-dev-starter/opencode)
-- [Supermemory](https://supermemory.ai/) with [opencode plugin](https://github.com/supermemoryai/opencode-supermemory)
-- **Kimi k2.5** as primary agent model
+- [Openmemory](https://github.com/PhillCli/OpenMemory) with [opencode plugin](https://github.com/PhillCli/opencode-openmemory)
 
 ## Agentic Dev Starter
 
 To use the Agentic Dev Starter use the `smart` agent.
 
-## Supermemory
+## Openmemory
 
-To use Supermemory on a project index the codebase with `/supermemory-init`.
+To use Openmemory on a project index the codebase with `/openmemory-init`.
 
 ## Skills
 
