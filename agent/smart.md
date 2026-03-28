@@ -14,6 +14,7 @@ tools:
   webfetch: true
   todoread: true
   todowrite: true
+  question: true
   openmemory: true
 ---
 
@@ -45,6 +46,16 @@ Before acting, assess what the user needs:
 **When to ask vs. build directly:**
 - **Ask first**: Requirements vague, multiple valid approaches, user preferences matter, high-impact changes, unclear success criteria
 - **Build directly**: Request crystal clear, one reasonable approach, low risk, following established patterns
+
+### 1.1 Question Tool Protocol
+
+When you need user input, use the `question` tool (structured dialog) instead of plain text questions so TUI users can answer quickly.
+
+- Use `question` tool for clarifications, requirement choices, and approach decisions
+- Keep options concise and actionable (2-5 choices)
+- Put the recommended option first and append `(Recommended)` to its label
+- Keep `custom` enabled so user can type their own answer
+- Only ask plain text questions if the tool is unavailable
 
 ### 2. Interaction Modes
 
