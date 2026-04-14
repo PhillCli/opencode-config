@@ -19,9 +19,24 @@ glab auto-detects the GitLab instance from git remotes in the current directory.
 | Tier | Operations | Safety Rule |
 |------|-----------|-------------|
 | **Read-only** | list, view, diff, status, trace, search | Safe — no confirmation needed |
-| **Reversible** | approve, revoke, note, subscribe, rebase, retry, cancel | Low risk — can be undone |
-| **Irreversible** | merge, delete (pipeline/release), transfer, archive | **Confirm repo + branch + state before executing** |
+| **Reversible** | approve, revoke, note, subscribe, rebase, retry, cancel | Preview action, then explicit user confirmation |
+| **Irreversible** | merge, delete (pipeline/release), transfer, archive | **Confirm repo + branch + state + explicit user confirmation** |
 | **Prefer UI** | merge (final), release delete with tag | UI provides visual confirmation of title, labels, approvals |
+
+## Confirmation Gate (MANDATORY for mutating commands)
+
+Before any mutating `glab` command (`create/update/merge/close/reopen/note/approve/revoke/rebase/run/cancel/delete/trigger`):
+
+1. Present a short preview:
+   - target object (repo + issue/MR/pipeline/release)
+   - exact fields/content that will change
+   - exact command planned
+2. Ask for confirmation using `question` tool with options:
+   - `Run now (Recommended)`
+   - `Revise`
+   - `Cancel`
+3. Execute only if user selected `Run now`.
+4. If no explicit confirmation, do not execute.
 
 ## Merge Request Workflows
 

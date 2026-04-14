@@ -1,7 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "instructions": ["AGENTS.md"],
+  "instructions": [
+    "AGENTS.md"
+  ],
   //"plugin": ["opencode-openmemory"],
   "model": "github-copilot/claude-opus-4.5",
   "small_model": "github-copilot/claude-sonnet-4.5",
@@ -20,13 +22,30 @@
   "formatter": {
     "terraform": {
       "disabled": false,
-      "command": ["terraform", "fmt", "$FILE"],
-      "extensions": [".tf", ".hcl", ".tfvars"]
+      "command": [
+        "terraform",
+        "fmt",
+        "$FILE"
+      ],
+      "extensions": [
+        ".tf",
+        ".hcl",
+        ".tfvars"
+      ]
     },
     "shfmt": {
       "disabled": false,
-      "command": ["shfmt", "-w", "$FILE"],
-      "extensions": [".sh", ".bash", ".zsh", ".ksh"]
+      "command": [
+        "shfmt",
+        "-w",
+        "$FILE"
+      ],
+      "extensions": [
+        ".sh",
+        ".bash",
+        ".zsh",
+        ".ksh"
+      ]
     },
     "prettier": {
       "disabled": false,
@@ -41,7 +60,9 @@
         "2",
         "$FILE"
       ],
-      "extensions": [".json"]
+      "extensions": [
+        ".json"
+      ]
     }
   },
   "mcp": {
@@ -483,7 +504,34 @@
       ". /*": "ask",
       "base64 -d*": "ask",
       "xxd -r*": "ask",
-      "openssl enc -d*": "ask"
+      "openssl enc -d*": "ask",
+      "glab issue create*": "ask",
+      "glab issue update*": "ask",
+      "glab issue close*": "ask",
+      "glab issue reopen*": "ask",
+      "glab issue delete*": "ask",
+      "glab issue note*": "ask",
+      "glab mr create*": "ask",
+      "glab mr update*": "ask",
+      "glab mr merge*": "ask",
+      "glab mr close*": "ask",
+      "glab mr reopen*": "ask",
+      "glab mr note*": "ask",
+      "glab mr approve*": "ask",
+      "glab mr revoke*": "ask",
+      "glab mr rebase*": "ask",
+      "glab release create*": "ask",
+      "glab release delete*": "ask",
+      "glab ci run*": "ask",
+      "glab ci run-trig*": "ask",
+      "glab ci cancel*": "ask",
+      "glab ci delete*": "ask",
+      "glab ci retry*": "ask",
+      "glab ci trigger*": "ask",
+      "glab api --method POST*": "ask",
+      "glab api --method PUT*": "ask",
+      "glab api --method PATCH*": "ask",
+      "glab api --method DELETE*": "ask"
     }
   }
 }

@@ -46,6 +46,22 @@ Use concise options, recommended option first with `(Recommended)`.
 4. Add measurable acceptance criteria.
 5. Validate clarity, testability, and language consistency.
 
+## Publish Safety Protocol (MANDATORY)
+
+For any request that could mutate a GitLab issue/work item:
+
+1. **Preview first**: always return proposed markdown draft in chat.
+2. **No implicit publish**: do not treat "add/update/write/fill" as permission to mutate.
+3. **Explicit confirmation required** via `question` tool before running mutating commands.
+4. Allowed confirmation options:
+   - `Publish as-is (Recommended)`
+   - `Revise draft`
+   - `Cancel`
+5. Only after `Publish as-is` may the agent run `glab issue update/create/...`.
+6. After publish, show executed command summary and resulting URL.
+
+If confirmation is missing, stop at preview.
+
 ## Output format
 
 Use headings in selected language.
