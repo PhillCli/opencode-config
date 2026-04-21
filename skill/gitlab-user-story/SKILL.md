@@ -46,6 +46,13 @@ Use concise options, recommended option first with `(Recommended)`.
 4. Add measurable acceptance criteria.
 5. Validate clarity, testability, and language consistency.
 
+### Story-only content guardrail (MANDATORY)
+
+- The markdown draft must contain **only publishable story content**.
+- Do **not** include process/meta narration from assistant workflow (e.g., "issue has no description", "this is a draft", "preview", "refinement note", "proposed text").
+- Keep process commentary outside the markdown block.
+- If uncertain whether a sentence is domain content or process commentary, exclude it from markdown.
+
 ## Publish Safety Protocol (MANDATORY)
 
 For any request that could mutate a GitLab issue/work item:
@@ -114,6 +121,14 @@ Use headings in selected language.
 - Scope is clear and bounded.
 - AC are testable and unambiguous.
 - Output is paste-ready for GitLab.
+- Markdown contains only domain story content (no assistant workflow/process narration).
+- No issue-state commentary unless explicitly requested as separate non-markdown analysis.
+
+## NEVER
+
+- NEVER place assistant process/status statements inside the story markdown.
+- NEVER mix "analysis of current issue state" with publishable story text.
+- NEVER output markdown that is not safe to paste directly into GitLab as-is.
 
 ## Optional clarification set (single question-tool batch)
 
