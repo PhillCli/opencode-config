@@ -1,7 +1,6 @@
 ---
 description: Reviews code for correctness, maintainability, and best practices. Use proactively for significant code changes (new features, refactors, critical fixes) and always before task completion. Do NOT use for trivial changes (typo fixes, formatting), work-in-progress code, or generated/boilerplate code.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.1
 tools:
   bash: true

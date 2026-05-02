@@ -1,7 +1,6 @@
 ---
 description: Makes focused code changes to a single file. Use for parallel edits when changes are repetitive and isolated (e.g., updating imports across 5 files). Do NOT use when changes depend on each other, when editing fewer than 3 files, or for complex logic requiring deep context.
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 tools:
   bash: true
