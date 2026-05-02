@@ -1,3 +1,82 @@
+## Agent Self-Discovery & Execution Rules
+
+Before acting, you MUST satisfy the relevant rules below. Do not proceed until you have.
+
+**Tradeoff:** These rules bias toward caution over speed. For trivial single-line fixes, use judgment.
+
+### 1. Think Before Coding
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before proposing an implementation approach, choosing a library/function, or assuming project conventions (naming, assertion styles, error-handling patterns, architecture), you MUST use `codebase-explorer`, `grep`, or `glob` to discover how the codebase already solves analogous problems.
+- State your assumptions explicitly. If uncertain, ask rather than guess.
+- If multiple interpretations exist, present them — don't pick silently.
+- If a simpler approach exists, push back and say so.
+- If something is unclear, stop. Name what's confusing. Ask.
+**Exception:** Trivial single-line fixes where the pattern is unambiguous.
+
+### 2. Clarify with Structured Questions
+When you need user input for scope, preferences, missing requirements, or approach decisions, you MUST use the `question` tool.
+Do NOT ask clarifying questions in free-form plain text.
+Do NOT proceed with ambiguous requirements.
+
+### 3. Simplicity First
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+### 4. Track Multi-Step Work
+For any task expected to take 3+ steps, touch 2+ files, or require verification (tests, lint, type-check), you MUST create a todo list with `todowrite` before starting execution.
+Update task status in real time (`in_progress` → `completed`).
+Do NOT declare completion with pending items remaining.
+
+### 5. Surgical Changes
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it — don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+### 6. Load Relevant Skills Proactively
+Before starting work in a specialized domain, you MUST check `available_skills` and load any relevant skill using the `skill` tool.
+Relevant domains include but are not limited to: diagrams, gitlab, terraform, terragrunt, testing strategy, documentation, advanced TypeScript, skill creation.
+Do NOT attempt to implement from scratch what a loaded skill already provides.
+
+### 7. Delegate to Specialized Agents
+You MUST spawn the appropriate subagent rather than doing the work inline when:
+- 2+ files need editing → `@implementer`
+- Writing tests (especially multiple related tests or TDD) → `@tester`
+- Reviewing significant changes (new features, refactors, critical fixes) → `@reviewer`
+- Debugging after 2 failed attempts → `@debugger`
+- Complex codebase research → `@codebase-explorer`
+- External docs / best practices → `@researcher`
+
+### 8. Verify Before Declaring Done
+**Define success criteria. Loop until verified.**
+
+For multi-step tasks, state a brief plan with verification checks. Transform tasks into verifiable goals:
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+Before telling the user work is complete, you MUST:
+- Confirm all todo items are `completed`
+- Run relevant tests (`python -m pytest tests/<module> -v` or equivalent)
+- Run quality gates (`ruff check --fix && ruff format && mypy src/` and `pre-commit run --all-files` if requested)
+- Verify no forbidden directories/files were modified per repo constraints
+
 ## Communication Style
 
 When reporting information back to the user:
