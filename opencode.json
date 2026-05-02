@@ -1,51 +1,32 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "instructions": [
-    "AGENTS.md"
-  ],
+  "instructions": ["AGENTS.md"],
   //"plugin": ["opencode-openmemory"],
-  "model": "github-copilot/claude-opus-4.5",
-  "small_model": "github-copilot/claude-sonnet-4.5",
+  "model": "opencode-go/deepseek-v4-pro",
+  "small_model": "opencode-go/deepseek-v4-flash",
   "agent": {
     "smart": {
       "prompt": "{file:./agent/smart.md}",
-      "model": "github-copilot/claude-opus-4.5"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "plan": {
-      "model": "github-copilot/claude-opus-4.5"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "build": {
-      "model": "github-copilot/claude-sonnet-4.5"
+      "model": "opencode-go/deepseek-v4-flash"
     }
   },
   "formatter": {
     "terraform": {
       "disabled": false,
-      "command": [
-        "terraform",
-        "fmt",
-        "$FILE"
-      ],
-      "extensions": [
-        ".tf",
-        ".hcl",
-        ".tfvars"
-      ]
+      "command": ["terraform", "fmt", "$FILE"],
+      "extensions": [".tf", ".hcl", ".tfvars"]
     },
     "shfmt": {
       "disabled": false,
-      "command": [
-        "shfmt",
-        "-w",
-        "$FILE"
-      ],
-      "extensions": [
-        ".sh",
-        ".bash",
-        ".zsh",
-        ".ksh"
-      ]
+      "command": ["shfmt", "-w", "$FILE"],
+      "extensions": [".sh", ".bash", ".zsh", ".ksh"]
     },
     "prettier": {
       "disabled": false,
@@ -60,9 +41,7 @@
         "2",
         "$FILE"
       ],
-      "extensions": [
-        ".json"
-      ]
+      "extensions": [".json"]
     }
   },
   "mcp": {
