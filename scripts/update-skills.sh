@@ -7,8 +7,11 @@ REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 SKILL_DIR="$REPO_ROOT/skill"
 
 # URL-based skills (sparse checkout)
+#SKILLS=(
+#	"https://github.com/anthropics/skills/tree/main/skills/skill-creator"
+#)
+
 SKILLS=(
-	"https://github.com/anthropics/skills/tree/main/skills/skill-creator"
 )
 
 mkdir -p "$SKILL_DIR"
