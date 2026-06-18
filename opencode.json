@@ -8,25 +8,22 @@
   "agent": {
     "smart": {
       "prompt": "{file:./agent/smart.md}",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/glm-5.2"
     },
     "plan": {
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/glm-5.2"
     },
     "build": {
+      "model": "opencode-go/glm-5.2"
+    },
+    "codebase-explorer": {
       "model": "opencode-go/deepseek-v4-flash"
     },
-    "reviewer": {
-      "model": "opencode-go/kimi-k2.6"
-    },
     "debugger": {
-      "model": "opencode-go/kimi-k2.6"
-    },
-    "tester": {
-      "model": "opencode-go/kimi-k2.6"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "documenter": {
-      "model": "opencode-go/kimi-k2.6"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "implementer": {
       "model": "opencode-go/deepseek-v4-flash"
@@ -34,8 +31,11 @@
     "researcher": {
       "model": "opencode-go/deepseek-v4-flash"
     },
-    "codebase-explorer": {
-      "model": "opencode-go/deepseek-v4-flash"
+    "reviewer": {
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "tester": {
+      "model": "opencode-go/deepseek-v4-pro"
     }
   },
   "formatter": {
