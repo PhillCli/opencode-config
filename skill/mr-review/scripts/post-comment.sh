@@ -21,12 +21,12 @@ MESSAGE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --mr) MR_IID="$2"; shift 2 ;;
-    --file) FILE="$2"; shift 2 ;;
-    --line) LINE="$2"; shift 2 ;;
-    --old-line) OLD_LINE="$2"; shift 2 ;;
-    --reply) REPLY_ID="$2"; shift 2 ;;
-    --message) MESSAGE="$2"; shift 2 ;;
+    --mr) [[ $# -ge 2 ]] || { echo "error: --mr requires a value" >&2; exit 2; }; MR_IID="$2"; shift 2 ;;
+    --file) [[ $# -ge 2 ]] || { echo "error: --file requires a value" >&2; exit 2; }; FILE="$2"; shift 2 ;;
+    --line) [[ $# -ge 2 ]] || { echo "error: --line requires a value" >&2; exit 2; }; LINE="$2"; shift 2 ;;
+    --old-line) [[ $# -ge 2 ]] || { echo "error: --old-line requires a value" >&2; exit 2; }; OLD_LINE="$2"; shift 2 ;;
+    --reply) [[ $# -ge 2 ]] || { echo "error: --reply requires a value" >&2; exit 2; }; REPLY_ID="$2"; shift 2 ;;
+    --message) [[ $# -ge 2 ]] || { echo "error: --message requires a value" >&2; exit 2; }; MESSAGE="$2"; shift 2 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done

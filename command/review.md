@@ -11,7 +11,7 @@ Review code changes using a reviewer-researcher consensus loop that grounds find
 1. **Gather context** — Determine the review target:
    - If $ARGUMENTS has an MR IID (number), load the `mr-review` skill and run its `get-mr-context.sh --mr <IID>` for MR metadata + diffs
    - If no IID, check for an open MR on the current branch: `glab mr list --source-branch $(git branch --show-current) 2>/dev/null`
-   - If no MR, fall back to local diff: determine base branch (`origin/main` if it exists, else `origin/master`, else `main`), then `git diff $(git merge-base HEAD <base>)..HEAD`
+   - If no MR, fall back to local diff: determine base branch (`origin/main` if it exists, else `origin/master`, else `main`), then `git diff --merge-base <base> -- .`
    - Run automated checks in parallel (tests, type-check, lint)
    - Ask me the purpose if unclear from MR description or commits
 

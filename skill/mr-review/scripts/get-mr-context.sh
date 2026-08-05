@@ -18,8 +18,8 @@ DIFF_SOURCE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --mr) MR_IID="$2"; shift 2 ;;
-    --diff-source) DIFF_SOURCE="$2"; shift 2 ;;
+    --mr) [[ $# -ge 2 ]] || { echo "error: --mr requires a value" >&2; exit 2; }; MR_IID="$2"; shift 2 ;;
+    --diff-source) [[ $# -ge 2 ]] || { echo "error: --diff-source requires a value" >&2; exit 2; }; DIFF_SOURCE="$2"; shift 2 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done
@@ -82,24 +82,31 @@ else
     echo "source_branch: $SOURCE_BRANCH"
   else
     # Fetch latest remote state
-    git fetch origin "$SOURCE_BRANCH" --quiet 2>/dev/null || true
+    FETCH_OK=true
+    git fetch origin "$SOURCE_BRANCH" --quiet 2>/dev/null || FETCH_OK=false
 
     LOCAL_HEAD=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-    if git rev-parse --verify "origin/$SOURCE_BRANCH" >/dev/null 2>&1; then
+    if [ "$FETCH_OK" = true ] && git rev-parse --verify "origin/$SOURCE_BRANCH" >/dev/null 2>&1; then
       REMOTE_HEAD=$(git rev-parse "origin/$SOURCE_BRANCH")
     else
-      REMOTE_HEAD="not_on_remote"
+      REMOTE_HEAD="unknown"
     fi
     UNCOMMITTED=$(git status --porcelain 2>/dev/null || echo "")
 
     LOCAL_SHORT="${LOCAL_HEAD:0:8}"
-    if [ "$REMOTE_HEAD" = "not_on_remote" ]; then
-      REMOTE_SHORT="not_on_remote"
+    if [ "$REMOTE_HEAD" = "unknown" ]; then
+      REMOTE_SHORT="unknown"
     else
       REMOTE_SHORT="${REMOTE_HEAD:0:8}"
     fi
 
-    if [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ] && [ -n "$UNCOMMITTED" ]; then
+    if [ "$REMOTE_HEAD" = "unknown" ]; then
+      if [ -n "$UNCOMMITTED" ]; then
+        BRANCH_STATUS="UNCOMMITTED_CHANGES"
+      else
+        BRANCH_STATUS="REMOTE_UNKNOWN"
+      fi
+    elif [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ] && [ -n "$UNCOMMITTED" ]; then
       BRANCH_STATUS="DIVERGED_AND_DIRTY"
     elif [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
       BRANCH_STATUS="UNPUSHED_COMMITS"
@@ -207,7 +214,11 @@ if [ "$DIFF_SOURCE" = "local" ]; then
     fi
   fi
 
-  git fetch origin "$TARGET_BRANCH" --quiet 2>/dev/null || true
+  if ! git fetch origin "$TARGET_BRANCH" --quiet 2>/dev/null; then
+    echo "error: failed to fetch origin/$TARGET_BRANCH — refusing to review against a potentially stale ref" >&2
+    echo "hint: check network/remote access, or use --diff-source remote" >&2
+    exit 1
+  fi
   if ! git rev-parse --verify "origin/$TARGET_BRANCH" >/dev/null 2>&1; then
     echo "error: origin/$TARGET_BRANCH is not available — fetch failed or branch does not exist on remote"
     echo "hint: check network/remote access, or use --diff-source remote"
@@ -219,7 +230,7 @@ if [ "$DIFF_SOURCE" = "local" ]; then
   echo "partial: true"
   echo "excluded: vendor,node_modules,minified"
   echo "---"
-  git diff "origin/$TARGET_BRANCH" -- . \
+  git diff --merge-base "origin/$TARGET_BRANCH" -- . \
     ':!vendor/' ':!node_modules/' ':!*.min.js' ':!*.min.css'
 else
   # Remote diff
