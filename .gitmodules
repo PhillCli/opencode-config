@@ -1,6 +1,6 @@
 [submodule "skill/terraform-skill"]
-	path = skill/terraform-skill
+	path = skills/terraform-skill
 	url = https://github.com/antonbabenko/terraform-skill
 [submodule "skill/terragrunt-skill"]
-	path = skill/terragrunt-skill
+	path = skills/terragrunt-skill
 	url = https://github.com/jfr992/terragrunt-skill.git
