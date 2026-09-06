@@ -98,6 +98,7 @@ Do **not** flag:
 - Explicitly state scenarios/environments where the issue arises.
 - Use a matter-of-fact tone — helpful reviewer, not accusatory.
 - Write for quick comprehension without close reading.
+- If you include a GitLab `suggestion` fence, it must be a splice of the exact `--line` you will post on. See [GitLab suggestion blocks](#gitlab-suggestion-blocks). Do not wrap a whole resource just to show a one-argument fix.
 
 #### Good and bad comment examples
 
@@ -175,5 +176,30 @@ Line selection rules:
 - For removed lines, use `--old-line` (targets the old side).
 - `--line` and `--old-line` cannot be used together.
 - Pick the most relevant single line or narrow range for the finding.
+
+#### GitLab suggestion blocks
+
+A `suggestion` fence is not "here is better code nearby." GitLab's Apply button **splices that text into the exact lines the comment is anchored on**. If the body and the `--line` range disagree, Apply deletes neighboring braces and the widget shows the edit on the wrong lines.
+
+This happens most on brand-new files (every line is an add). GitLab's `line_code` has no old side, and multiline ranges drift. A suggestion that re-wraps a whole `resource` / function block, including a leading header or a trailing `}`, will eat the previous block's closer when the range is off by even one line.
+
+How to keep Apply aligned:
+
+- Anchor the **narrowest** line that actually changes. Prefer a single `--line N`. Use `N:M` only when every line in that range is part of the replacement.
+- The fence body is the new text for **only those anchored lines**. Do not repeat the `resource` / `function` header or a closing `}` unless that token is inside the range.
+- Replacing 1 line with 2 is fine. Changing *which* lines you replace is not.
+- If the fix cannot be expressed as a tight splice, omit the fence and describe the change. A wrong Apply is worse than no button.
+- `glab mr note update` can change the body, not the position. A misplaced suggestion cannot be rescued by editing the note.
+
+```markdown
+# Good: comment --line 36 on the secret_data assignment only
+```suggestion
+  secret_data_wo         = tls_private_key.os_login.private_key_pem
+  secret_data_wo_version = 1
+```
+
+# Bad: comment --line 34:37 (whole resource) and paste a new resource { ... }
+# On a new file the widget can attach a few lines early and delete the previous block's `}`.
+```
 
 If the first call outputs `posted: false` (meaning `glab` is not available), skip the script for remaining comments and post manually via the GitLab API.
