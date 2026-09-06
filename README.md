@@ -1,41 +1,18 @@
-# Opencode config
+# opencode-config
 
-Currently testing:
+Global OpenCode config, versioned here and symlinked into `~/.config/opencode/`:
 
-- [Agentic Dev Starter](https://agentrules.directory/rules/bcheung/agentic-dev-starter/opencode)
-- [Openmemory](https://github.com/PhillCli/OpenMemory) with [opencode plugin](https://github.com/PhillCli/opencode-openmemory)
+- `skills/`, `commands/`, `agents/`, `AGENTS.md` — symlinked live
+- `plugin/notification.ts` — symlinked into `~/.config/opencode/plugin/`
+- `opencode.json` — **template only**; the live config is `~/.config/opencode/opencode.json`. No secrets here (use `{env:VAR}` substitution).
 
-## Agentic Dev Starter
+## Usage
 
-To use the Agentic Dev Starter use the `smart` agent.
+- Update git-submodule skills: `./scripts/update-skills.sh`
+- Skill usage analytics (reads `~/.local/share/opencode/opencode.db`, read-only):
+  `python3 scripts/skill-usage.py`
 
-## Openmemory
+## Pruning policy
 
-To use Openmemory on a project index the codebase with `/openmemory-init`.
-
-## Skills
-
-### Git submodule
-
-- [Terraform Skill](https://github.com/antonbabenko/terraform-skill)
-
-Update them with:
-
-`git submodule update --remote`
-
-### Manual download
-
-- https://github.com/anthropics/skills/tree/main/skills/skill-creator
-
-Update them with:
-
-`./scripts/update-skills.sh`
-
-### Skills to check out
-
-- https://github.com/lackeyjb/playwright-skill
-
-## API Slugs
-
-- [Google](https://ai.google.dev/gemini-api/docs)
-- [Kimi for Coding](https://platform.moonshot.cn/docs)
+Review skill usage quarterly (`scripts/skill-usage.py`). Skills with zero loads
+after ~3 months get archived on a branch and removed from main.
