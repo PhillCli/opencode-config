@@ -148,3 +148,9 @@ Do NOT auto-stage, commit, or push changes. Only use read-only git commands:
 **Why:** Users need full control over version control. Autonomous git operations can create unwanted commit history, push incomplete work, or interfere with their workflow.
 
 When work is complete, inform the user that changes are ready. Let them decide when to commit.
+
+**Commit messages:**
+- Conventional: `type: subject` or `type(scope): subject`. Imperative. Match recent `git log`.
+- Subject line only.
+- Do not add a body that restates the diff, the file list, or the merge request.
+- Body only when git cannot show it: BREAKING CHANGE, required operator action, revert reason.
