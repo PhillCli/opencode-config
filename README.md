@@ -3,7 +3,6 @@
 Global OpenCode config, versioned here and symlinked into `~/.config/opencode/`:
 
 - `skills/`, `commands/`, `agents/`, `AGENTS.md` — symlinked live
-- `plugin/notification.ts` — symlinked into `~/.config/opencode/plugin/`
 - `opencode.json` — **template only**; the live config is `~/.config/opencode/opencode.json`. No secrets here (use `{env:VAR}` substitution).
 
 ## Usage
