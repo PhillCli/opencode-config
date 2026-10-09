@@ -304,23 +304,5 @@
     },
     { "action": "shell", "resource": "glab api*-X DELETE*", "effect": "ask" },
     { "action": "shell", "resource": "glab api*-XDELETE*", "effect": "ask" }
-  ],
-  "provider": {
-    "flm": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "FLM (local)",
-      "options": {
-        "baseURL": "http://localhost:52625/v1"
-      },
-      "models": {
-        "qwen3-tk:4b": {
-          "name": "Qwen3 4B Thinking (local)",
-          "limit": {
-            "context": 128000,
-            "output": 32000
-          }
-        }
-      }
-    }
-  }
+  ]
 }
