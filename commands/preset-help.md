@@ -11,11 +11,11 @@ Explain this OpenCode preset. Be practical and short.
 - `AGENTS.md` adds short global rules on top of the model prompt. It does not replace that prompt.
 - Built-in `explore` and `general` are for wide or isolated digs. `reviewer` is a read-only second pass. Do not delegate ordinary edits.
 - Skills load when the task is in that domain (GitLab, Terraform, Terragrunt, and others in `skills/`).
-- You own git. The agent does not commit or push unless you ask or run `/commit`.
+- You own git. The agent does not commit or push unless you ask, run `/commit`, or grant it for the session.
 
 ## Commands
 
-- `/commit` — commit with a conventional subject, after confirmation
+- `/commit` — stage and commit with a conventional subject, no confirmation step
 - `/review` — bugs-first review; GitLab MR posting goes through the mr-review skill
 - `/test` — write or run tests the way this repo already does
 - `/debug` — reproduce, fix, add a regression test

@@ -4,13 +4,12 @@ description: Create atomic git commits with conventional messages
 
 Commit $ARGUMENTS
 
-Create git commits for my changes.
+Create git commits for my changes. Running `/commit` is explicit authorization: do not ask whether to proceed, stage and commit directly.
 
 ## Process
 
 1. **Analyze and plan** - Review conversation history, run `git status -s` and `git diff`, determine if changes should be one or multiple logical commits, group related files, draft conventional commit messages (`type: description`) in imperative mood. Subject line only.
-2. **Present plan** - List files for each commit, show commit messages with type prefix, ask: "I plan to create [N] commit(s) with these changes. Shall I proceed?"
-3. **Execute upon confirmation** - Use `git add` with specific files (never `-A` or `.`), create commits with planned messages, show result with `git log --oneline -n [N]`
+2. **Execute directly** - Use `git add` with specific files (never `-A` or `.`), create commits with the planned messages, list each commit's files and message, show result with `git log --oneline -n [N]`
 
 ## Commit Message Format
 

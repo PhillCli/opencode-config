@@ -18,7 +18,8 @@ Loaded on top of the model prompt in every project. Repo `AGENTS.md` files add c
 
 ## Git
 
-- Do not commit, push, or rewrite history unless asked, or a command such as `/commit` says to.
+- Do not commit, push, or rewrite history unless asked, a command such as `/commit` says to, or the user grants it for the current session. A commit request is itself the approval: stage and commit without asking again.
+- Push only when explicitly told to; committing never implies pushing.
 - Subjects: `type: subject` or `type(scope): subject`, imperative, match recent `git log`. Subject only, unless git cannot show the reason (breaking change, required operator action, revert).
 
 ## Secrets

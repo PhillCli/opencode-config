@@ -123,9 +123,9 @@
     },
 
     { "action": "shell", "resource": "*", "effect": "allow" },
-    { "action": "shell", "resource": "git add *", "effect": "ask" },
-    { "action": "shell", "resource": "git stage *", "effect": "ask" },
-    { "action": "shell", "resource": "git commit *", "effect": "ask" },
+    { "action": "shell", "resource": "git add *", "effect": "allow" },
+    { "action": "shell", "resource": "git stage *", "effect": "allow" },
+    { "action": "shell", "resource": "git commit *", "effect": "allow" },
     { "action": "shell", "resource": "git push *", "effect": "ask" },
     { "action": "shell", "resource": "git checkout *", "effect": "ask" },
     { "action": "shell", "resource": "git switch *", "effect": "ask" },
