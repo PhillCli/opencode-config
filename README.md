@@ -11,6 +11,7 @@ Primary agent is OpenCode `build`. `AGENTS.md` is a short overlay, not a replace
 ## Usage
 
 - Install/refresh the preset in `~/.config/opencode/` (symlinks, `opencode.json`, plugin shims): `mise run install`
+- Clone with `--recurse-submodules` (or run `git submodule update --init`) before `mise run install` — `skills/` is submodule-backed and symlinked as-is
 - Update git-submodule skills: `./scripts/update-skills.sh`
 - Skill usage analytics (reads `~/.local/share/opencode/opencode.db`, read-only):
   `python3 scripts/skill-usage.py`
