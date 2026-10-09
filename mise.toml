@@ -1,0 +1,8 @@
+[env]
+
+[tools]
+bun = "latest"
+
+[tasks.install-plugins]
+description = "Install ~/.config/opencode/plugins shims for repo plugins"
+run = "scripts/install-plugins.sh"

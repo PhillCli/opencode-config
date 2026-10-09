@@ -3,13 +3,14 @@
 Global OpenCode config, versioned here and symlinked into `~/.config/opencode/`:
 
 - `skills/`, `commands/`, `agents/`, `AGENTS.md` — symlinked live
-- `plugins/` — versioned source; the V2 global plugin loader fails on symlinked entrypoints (anomalyco/opencode#23553), so `~/.config/opencode/plugins/` holds real one-line re-export shims pointing at these files
+- `plugins/` — versioned source; the V2 global plugin loader fails on symlinked entrypoints (anomalyco/opencode#23553), so `~/.config/opencode/plugins/` holds generated one-line re-export shims instead — refresh with `mise run install-plugins`
 - `opencode.json` — loaded as project config in this repo, so it overrides `~/.config/opencode/opencode.json` while the workspace is here. Other projects load only the global file. Keep the two permission and model sections in sync. No secrets (use `{env:VAR}`).
 
 Primary agent is OpenCode `build`. `AGENTS.md` is a short overlay, not a replacement prompt. The only custom subagent is `reviewer`. Start a new session after agent changes; an open session keeps the agent it started with.
 
 ## Usage
 
+- Install/refresh plugin shims in `~/.config/opencode/plugins/`: `mise run install-plugins`
 - Update git-submodule skills: `./scripts/update-skills.sh`
 - Skill usage analytics (reads `~/.local/share/opencode/opencode.db`, read-only):
   `python3 scripts/skill-usage.py`
