@@ -1,4 +1,3 @@
-// Project config when the workspace is this repo. Also keep ~/.config/opencode/opencode.json in sync — that file is what other projects load. No secrets (use {env:VAR}).
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,

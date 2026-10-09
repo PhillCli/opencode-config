@@ -3,6 +3,10 @@
 [tools]
 bun = "latest"
 
+[tasks.install]
+description = "Install/refresh the preset in ~/.config/opencode (symlinks, opencode.json, plugin shims)"
+run = "scripts/install.sh"
+
 [tasks.install-plugins]
 description = "Install ~/.config/opencode/plugins shims for repo plugins"
 run = "scripts/install-plugins.sh"
