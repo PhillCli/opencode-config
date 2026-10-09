@@ -41,9 +41,6 @@
       "flux-operator-mcp-server": {
         "type": "local",
         "command": ["flux-operator-mcp", "serve"],
-        "environment": {
-          "KUBECONFIG": "/home/filip/.kube/config"
-        },
         "disabled": true
       },
       "context7-mcp-server": {
