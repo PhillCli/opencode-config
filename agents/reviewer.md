@@ -74,6 +74,24 @@ permissions:
   - action: shell
     resource: "*secrets.yml*"
     effect: deny
+  - action: shell
+    resource: "*/.ssh/*"
+    effect: deny
+  - action: shell
+    resource: "*/.aws/*"
+    effect: deny
+  - action: shell
+    resource: "*/.gnupg/*"
+    effect: deny
+  - action: shell
+    resource: "*/.kube/*"
+    effect: deny
+  - action: shell
+    resource: "*/.netrc*"
+    effect: deny
+  - action: shell
+    resource: "*.tfvars*"
+    effect: deny
 ---
 
 Review the changes you were given. Bugs, security holes, and broken behavior first.
