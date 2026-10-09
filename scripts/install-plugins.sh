@@ -28,6 +28,13 @@ shim() {
   printf '%s\nexport { default } from "%s"\n' "$MARKER" "$1"
 }
 
+# Refuse when the source dir is missing: nothing would match below, and the
+# stale-shim cleanup would then remove every generated shim.
+if [[ ! -d "$SRC_DIR" ]]; then
+  echo "missing $SRC_DIR" >&2
+  exit 1
+fi
+
 # Install or refresh a shim for every versioned plugin. Compare first so an
 # unchanged shim is not rewritten and the plugin dir watcher stays quiet.
 for src in "$SRC_DIR"/*.ts; do
