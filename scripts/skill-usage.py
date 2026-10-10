@@ -11,7 +11,7 @@ The currently registered skill set comes from the running server's
 SKILL.md), falling back to a filesystem scan of the standard skill sources.
 
 Buckets:
-  dead          registered from a global source, advertised, zero loads in window
+  dead          registered from a global source, advertised, zero loads in window, file older than the window
   manual        autoinvoke false / disable-model-invocation (never advertised)
   unadvertised  no description (the model cannot see or pick it)
   ghost         loaded historically, not registered or found in any project source
@@ -144,6 +144,15 @@ def frontmatter_flags(path):
     return manual, described
 
 
+def file_age_days(path):
+    """Days since the skill file's mtime, or None when the path is unusable."""
+    try:
+        now = datetime.datetime.now().timestamp()
+        return max(0.0, (now - os.path.getmtime(path)) / 86_400)
+    except (OSError, TypeError):
+        return None
+
+
 def find_project_skills(session_dirs):
     """Scan session directories and their ancestors for project skill sources."""
     found = {}
@@ -202,8 +211,8 @@ def main():
             msg = error if isinstance(error, str) else json.dumps(error)
             rec["errors"].append(msg)
 
-    # id -> {global, manual_only, described}; `global` marks the user's own
-    # prunable sources (builtins and other projects' skills are excluded).
+    # id -> {global, manual_only, described, age}; `global` marks the user's
+    # own prunable sources (builtins and other projects' skills are excluded).
     registry = {}
     api = current_skills()
     if api is not None:
@@ -215,6 +224,7 @@ def main():
                 ),
                 "manual_only": not s["autoinvoke"],
                 "described": bool(s["description"]),
+                "age": file_age_days(path),
             }
     else:
         for src in GLOBAL_SOURCES:
@@ -224,6 +234,7 @@ def main():
                     "global": True,
                     "manual_only": manual,
                     "described": described,
+                    "age": file_age_days(path),
                 }
 
     project = find_project_skills(session_dirs)
@@ -253,7 +264,9 @@ def main():
             manual.append(sid)
         elif not reg["described"]:
             unadvertised.append(sid)
-        elif not rec or rec["win"] == 0:
+        elif (not rec or rec["win"] == 0) and (
+            reg["age"] is None or reg["age"] >= args.days
+        ):
             dead.append(
                 (
                     sid,
@@ -304,7 +317,8 @@ def main():
         print(f"{m}  {dict(months[m].most_common())}")
 
     print(
-        f"== dead: global source, advertised, 0 loads in {args.days}d (prune or fix) =="
+        f"== dead: global source, advertised, 0 loads in {args.days}d, "
+        f"file at least {args.days}d old (prune or fix) =="
     )
     for sid, count, last in dead:
         print(f"  {sid}  (all={count}, last={last})")
