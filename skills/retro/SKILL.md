@@ -1,6 +1,6 @@
 ---
 name: retro
-description: Propose improvements to the agent environment after a session - skills, commands, agents, AGENTS.md, permissions, formatters, tooling - most severe first. Use when the user asks for a retro or after a session with friction (rework loops, permission prompts, repeated corrections).
+description: Propose improvements to the agent environment at the end of a session - skills, commands, agents, AGENTS.md, permissions, formatters, tooling - most severe first. Use when the user wraps up the session ("that's all", "wrap up", "done for today") or asks for a retro, and the session had friction: rework loops, permission prompts, repeated corrections. Skip clean sessions.
 license: MIT
 ---
 
