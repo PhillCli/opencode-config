@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "model": "xai/grok-4.7",
-  "small_model": "opencode-go/gpt-5.6-luna",
+  "model": "opencode-go/glm-5.3",
+  "small_model": "opencode-go/gpt-6-luna",
   "default_agent": "build",
   "formatter": {
     "terraform": {
