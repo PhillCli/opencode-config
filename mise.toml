@@ -10,3 +10,7 @@ run = "scripts/install.sh"
 [tasks.install-plugins]
 description = "Install ~/.config/opencode/plugins shims for repo plugins"
 run = "scripts/install-plugins.sh"
+
+[tasks.skill-audit]
+description = "Audit skill usage: dead, unadvertised, ghosts, failed loads"
+run = "python3 scripts/skill-usage.py"
