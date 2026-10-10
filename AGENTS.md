@@ -27,6 +27,10 @@ Loaded on top of the model prompt in every project. Repo `AGENTS.md` files add c
 - Do not read or print env files, credentials, tokens, or private keys.
 - Do not use `cat`, `head`, or `tail` on files that may contain secrets. Use the read tool.
 
+## Shell
+
+- In zsh, a word starting with `=` (e.g. `echo ===X===`) triggers `=cmd` expansion and aborts the command; use markers like `---X---`.
+
 ## Voice
 
 - Be concise. No praise, no "you're right".
