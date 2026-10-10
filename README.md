@@ -13,10 +13,19 @@ Primary agent is OpenCode `build`. `AGENTS.md` is a short overlay, not a replace
 - Install/refresh the preset in `~/.config/opencode/` (symlinks, `opencode.json`, plugin shims): `mise run install`
 - Clone with `--recurse-submodules` (or run `git submodule update --init`) before `mise run install` — `skills/` is submodule-backed and symlinked as-is
 - Update git-submodule skills: `./scripts/update-skills.sh`
-- Skill usage analytics (reads `~/.local/share/opencode/opencode.db`, read-only):
-  `python3 scripts/skill-usage.py`
+- Skill usage audit — dead/ghost/error analysis over a time window. Reads the
+  OpenCode session DB read-only plus the running server's skill list:
+  `python3 scripts/skill-usage.py` (options: `--days 90`, `--json`, `--tools`)
 
 ## Pruning policy
 
-Review skill usage quarterly (`scripts/skill-usage.py`). Skills with zero loads
-after ~3 months get archived on a branch and removed from main.
+Review skill usage quarterly (`mise run skill-audit`). Act on the report
+buckets:
+
+- `dead` (on disk, advertised, zero loads in the window): archive on a branch
+  and remove from main
+- `never advertised` (no `description`): fix the frontmatter or drop the skill
+- `manual-only` (`autoinvoke` off) and ghosts (deleted/renamed skills): no
+  action, listed for context
+- `failed loads`: the model guessed an ID that did not resolve — rename the
+  skill or sharpen its description
