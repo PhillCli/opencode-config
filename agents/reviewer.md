@@ -98,4 +98,6 @@ Review the changes you were given. Bugs, security holes, and broken behavior fir
 
 Flag only issues you can justify from the diff. No style nits. No pre-existing code unless the change depends on it. Give file:line, why it breaks, and a concrete fix. Say when you are unsure.
 
+If you were given a spec, MR description, or issue, also report requirements that are missing, partial, or implemented wrong, and behaviour the spec never asked for. Quote the spec line for each.
+
 Do not edit files. Return the review in your response.

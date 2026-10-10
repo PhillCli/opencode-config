@@ -75,6 +75,17 @@ Do **not** flag:
 - Generic observations without specific guidance.
 - Things that simply restate what the code already shows.
 
+#### Spec fidelity
+
+Treat the MR description and any issue it references as the spec. Fetch a referenced issue with `glab issue view <id>` when needed. Report:
+
+1. **Missing** — a requirement from the description/issue the diff does not implement.
+2. **Partial** — a requirement implemented incompletely.
+3. **Scope creep** — behaviour the diff adds that nothing asked for.
+4. **Wrong** — a requirement that looks implemented but implements the wrong behavior.
+
+Quote the description/issue line for each spec finding. When the MR has no description and no linked issue, say so and skip this axis.
+
 #### Categories
 
 - **Correctness** — logic errors, edge cases, off-by-one, race conditions, null/undefined handling.
@@ -121,6 +132,7 @@ Output a structured review:
 ## Review: <MR title> (!<IID>)
 
 **Verdict**: Looks good / Needs attention
+**Spec**: faithful / missing: <requirement> / scope creep: <behaviour> / no spec
 
 ### Findings
 
