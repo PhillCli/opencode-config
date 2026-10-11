@@ -9,6 +9,7 @@ Create git commits for my changes. Running `/commit` is explicit authorization: 
 ## Process
 
 1. **Analyze and plan** - Review conversation history, run `git status -s` and `git diff`, determine if changes should be one or multiple logical commits, group related files, draft conventional commit messages (`type: description`) in imperative mood. Subject line only.
+   - Attribute each dirty file to this session or another origin: commit session-made files; ask before including unattributed ones; when the session made none, commit the unattributed changes as-is.
 2. **Execute directly** - Use `git add` with specific files (never `-A` or `.`), create commits with the planned messages, list each commit's files and message, show result with `git log --oneline -n [N]`
 
 ## Commit Message Format
