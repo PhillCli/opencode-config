@@ -1,5 +1,6 @@
 ---
 description: Create atomic git commits with conventional messages
+model: opencode-go/glm-5.3-flash
 ---
 
 Commit $ARGUMENTS
