@@ -1,14 +1,31 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": true,
   "model": "opencode-go/glm-5.3#max",
-  "small_model": "opencode-go/gpt-6-luna",
+  "providers": {
+    "opencode-go": {
+      "models": {
+        "glm-5.3": {
+          "settings": { "reasoningEffort": "max" }
+        }
+      }
+    }
+  },
   "default_agent": "build",
   "formatter": {
     "terraform": {
       "disabled": false,
       "command": ["terraform", "fmt", "$FILE"],
-      "extensions": [".tf", ".hcl", ".tfvars"]
+      "extensions": [".tf", ".tfvars"]
+    },
+    "terragrunt": {
+      "command": [
+        "bash",
+        "-c",
+        "case \"$1\" in *.tftest.hcl) terraform fmt \"$1\" ;; *) terragrunt hcl fmt --file \"$1\" ;; esac",
+        "--",
+        "$FILE"
+      ],
+      "extensions": [".hcl"]
     },
     "shfmt": {
       "disabled": false,
@@ -139,6 +156,11 @@
     { "action": "shell", "resource": "git* push*--force*", "effect": "deny" },
     { "action": "shell", "resource": "git* push* -f*", "effect": "deny" },
     { "action": "shell", "resource": "git* reset*--hard*", "effect": "deny" },
+    {
+      "action": "shell",
+      "resource": "git reset --hard HEAD",
+      "effect": "allow"
+    },
     { "action": "shell", "resource": "git config*", "effect": "deny" },
 
     { "action": "shell", "resource": "sudo*", "effect": "deny" },
@@ -300,5 +322,42 @@
     },
     { "action": "shell", "resource": "glab api*-X DELETE*", "effect": "ask" },
     { "action": "shell", "resource": "glab api*-XDELETE*", "effect": "ask" }
-  ]
+  ],
+  "agents": {
+    "explore": {
+      "permissions": [
+        { "action": "skill", "resource": "*", "effect": "allow" },
+        { "action": "grep", "resource": "*", "effect": "ask" },
+        {
+          "action": "context7-mcp-server_resolve-library-id",
+          "resource": "*",
+          "effect": "allow"
+        },
+        {
+          "action": "context7-mcp-server_query-docs",
+          "resource": "*",
+          "effect": "allow"
+        }
+      ]
+    },
+    "plan": {
+      "permissions": [
+        { "action": "skill", "resource": "*", "effect": "allow" },
+        { "action": "grep", "resource": "*", "effect": "ask" },
+        {
+          "action": "context7-mcp-server_resolve-library-id",
+          "resource": "*",
+          "effect": "allow"
+        },
+        {
+          "action": "context7-mcp-server_query-docs",
+          "resource": "*",
+          "effect": "allow"
+        }
+      ]
+    },
+    "title": {
+      "model": "opencode-go/gpt-6-luna"
+    }
+  }
 }
