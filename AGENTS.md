@@ -30,6 +30,8 @@ Loaded on top of the model prompt in every project. Repo `AGENTS.md` files add c
 ## Shell
 
 - In zsh, a word starting with `=` (e.g. `echo ===X===`) triggers `=cmd` expansion and aborts the command; use markers like `---X---`.
+- A project AGENTS.md env block (micromamba, mise, venv) applies to every shell call, commits included: re-activate per command. A hook failing with `Executable X not found` means the activation was skipped.
+- On a permission denial, switch to a fallback (`git stash push` for stray staging cleanup) rather than re-running the denied command.
 
 ## Voice
 
