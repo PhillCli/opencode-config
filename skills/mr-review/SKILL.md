@@ -69,7 +69,7 @@ Flag issues that:
 
 Do **not** flag:
 
-- Style nits unless they obscure meaning or violate documented standards.
+- Style or naming preferences.
 - Issues that demand rigor inconsistent with the rest of the codebase.
 - Pre-existing bugs in unchanged code.
 - Generic observations without specific guidance.
@@ -95,18 +95,23 @@ Quote the description/issue line for each spec finding. When the MR has no descr
 
 #### Priority levels
 
-- **[P0]** Critical — bug or security issue that must be fixed before merge.
-- **[P1]** Important — likely problem, should fix before merge.
-- **[P2]** Suggestion — improvement worth considering.
-- **[P3]** Nit — minor style or naming preference.
+- **[P0]** Critical — a validated defect causing widespread outage, data loss, or critical security exposure; fix immediately.
+- **[P1]** High priority — a validated defect that breaks core behavior under expected operating conditions; fix before merge.
+- **[P2]** Normal priority — a validated defect with narrower impact, such as an edge case, non-default configuration, or recoverable failure.
+- **[P3]** Low priority — a minor functional defect, not a style or naming preference.
+
+Priority describes impact and likelihood, not confidence. Make the reason for the priority clear in the finding; state uncertainty about the impact or proposed fix separately.
 
 #### Comment guidelines
 
 - Use backticks for all code elements (e.g., `@Override`, `toString()`): annotations, method names, variables, classes, etc. This prevents accidental user mentions.
 - Use "Merge Request" or "MR" instead of "Pull Request" or "PR".
 - Be clear about **why** the issue is a problem.
-- Be brief — at most 1 paragraph per finding.
+- Keep each finding to a short **Issue** paragraph followed by **Suggested fix** and **Verify**.
 - Explicitly state scenarios/environments where the issue arises.
+- Recommend the simplest sound fix within the existing design, not necessarily the fewest lines. Prefer one approach; name important tradeoffs and identify workarounds as such. If a design choice is unresolved, describe the required outcome and preferred approach rather than prescribing an unverified implementation.
+- Give the shortest useful repro or acceptance check. Label checks as already run or proposed; keep them safe and within the user's authorization.
+- Recommendations are advisory: do not implement fixes, add test files, or change infrastructure unless asked.
 - Use a matter-of-fact tone — helpful reviewer, not accusatory.
 - Write for quick comprehension without close reading.
 - If you include a GitLab `suggestion` fence, it must be a splice of the exact `--line` you will post on. See [GitLab suggestion blocks](#gitlab-suggestion-blocks). Do not wrap a whole resource just to show a one-argument fix.
@@ -114,9 +119,8 @@ Quote the description/issue line for each spec finding. When the MR has no descr
 #### Good and bad comment examples
 
 **Good comments** (specific, actionable, about added code):
-- "This null check on line 26 won't prevent the NPE because `userId` can still be null after validation"
-- "The new SQL query on line 45 is vulnerable to injection — use parameterized queries"
-- "This added loop will be infinite when the array is empty due to the counter logic"
+- **Issue:** An accepted 84-character prefix produces a 101-character metric name and prevents deployment; this affects long custom prefixes, not the default. **Suggested fix:** Limit the prefix to 83 characters to leave room for `_error_logs_count`, and update the validation message. **Verify (proposed):** An 83-character prefix passes; an 84-character prefix fails validation before contacting the API.
+- **Issue:** This added loop never terminates for an empty array because the counter cannot reach its exit condition. **Suggested fix:** Return early for empty input. **Verify (run):** Calling the function with `[]` timed out; after the fix it should return immediately.
 
 **Bad comments** (vague, redundant, or about already-added code):
 - "Consider adding a public field" (when diff shows a public field is already being added)
@@ -138,11 +142,10 @@ Output a structured review:
 
 **[P1] Title of finding**
 File: `path/to/file.ext`, lines 42–48
-Description of the issue and why it matters.
 
-**[P2] Title of finding**
-File: `path/to/file.ext`, line 15
-Description.
+**Issue:** Under <specific trigger>, <broken behavior> causes <impact>. Explain why this warrants the priority.
+**Suggested fix:** <Preferred minimal fix, with any important tradeoff or unresolved design choice.>
+**Verify (run / proposed):** <Shortest useful repro or acceptance check; distinguish observed evidence from expected behavior after the fix.>
 
 ---
 
