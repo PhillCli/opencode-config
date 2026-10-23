@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # get-mr-context.sh — Gather MR metadata, branch state, and diffs.
 #
-# With glab:  full metadata (JSON) + diffs from remote or local
+# With glab:  compact metadata (JSON) + diffs from remote or local
 # Without glab: branch state only; instructs caller to use the GitLab API
 #
 # Usage:
@@ -44,6 +44,33 @@ fi
 echo "=== TOOLS ==="
 echo "glab: $HAS_GLAB"
 
+MR_ARGS=()
+if [ -n "$MR_IID" ]; then
+  MR_ARGS+=("$MR_IID")
+fi
+
+MR_JSON=""
+MR_SOURCE=""
+TARGET_BRANCH=""
+if [ "$HAS_GLAB" = true ]; then
+  # Branch names precede the compact JSON so Bash can reuse them without jq.
+  if MR_CONTEXT=$(glab mr view "${MR_ARGS[@]}" -F json --jq '
+    (.source_branch // ""),
+    (.target_branch // ""),
+    ({
+      iid, title, description, state, draft, web_url,
+      project_id, source_project_id, target_project_id,
+      source_branch, target_branch, sha, diff_refs, has_conflicts,
+      head_pipeline: (.head_pipeline | if . == null then null else {id, status, web_url} end)
+    } | tojson)
+  ' 2>/dev/null); then
+    MR_SOURCE="${MR_CONTEXT%%$'\n'*}"
+    MR_CONTEXT="${MR_CONTEXT#*$'\n'}"
+    TARGET_BRANCH="${MR_CONTEXT%%$'\n'*}"
+    MR_JSON="${MR_CONTEXT#*$'\n'}"
+  fi
+fi
+
 # ── Section: branch state ────────────────────────────────────────────
 echo ""
 echo "=== BRANCH_STATE ==="
@@ -67,13 +94,9 @@ if [ -z "$CURRENT_BRANCH" ]; then
 else
   echo "branch: $CURRENT_BRANCH"
 
-  # We need the source branch name to compare. If we have glab + MR IID, get it.
-  # Otherwise assume current branch is the source branch.
   SOURCE_BRANCH="$CURRENT_BRANCH"
-  if [ "$HAS_GLAB" = true ] && [ -n "$MR_IID" ]; then
-    if MR_SOURCE=$(glab mr view "$MR_IID" --jq '.source_branch' 2>/dev/null); then
-      [ -n "$MR_SOURCE" ] && SOURCE_BRANCH="$MR_SOURCE"
-    fi
+  if [ -n "$MR_SOURCE" ]; then
+    SOURCE_BRANCH="$MR_SOURCE"
   fi
 
   if [ "$CURRENT_BRANCH" != "$SOURCE_BRANCH" ]; then
@@ -129,13 +152,7 @@ echo ""
 echo "=== MR_METADATA ==="
 
 if [ "$HAS_GLAB" = true ]; then
-  MR_ARGS=()
-  if [ -n "$MR_IID" ]; then
-    MR_ARGS+=("$MR_IID")
-  fi
-
-  # Get MR metadata as JSON
-  if MR_JSON=$(glab mr view "${MR_ARGS[@]}" -F json 2>/dev/null); then
+  if [ -n "$MR_JSON" ]; then
     echo "$MR_JSON"
   else
     echo "error: failed to get MR metadata via glab"
@@ -190,17 +207,6 @@ if [ "$DIFF_SOURCE" = "local" ]; then
       ;;
   esac
 
-  # Local diff — need to figure out the target branch
-  if [ "$HAS_GLAB" = true ]; then
-    MR_ARGS=()
-    if [ -n "$MR_IID" ]; then
-      MR_ARGS+=("$MR_IID")
-    fi
-    if ! TARGET_BRANCH=$(glab mr view "${MR_ARGS[@]}" --jq '.target_branch' 2>/dev/null); then
-      TARGET_BRANCH=""
-    fi
-  fi
-
   if [ -z "${TARGET_BRANCH:-}" ]; then
     # Fallback: assume main or master
     if git rev-parse --verify origin/main >/dev/null 2>&1; then
@@ -235,10 +241,6 @@ if [ "$DIFF_SOURCE" = "local" ]; then
 else
   # Remote diff
   if [ "$HAS_GLAB" = true ]; then
-    MR_ARGS=()
-    if [ -n "$MR_IID" ]; then
-      MR_ARGS+=("$MR_IID")
-    fi
     echo "source: remote (glab)"
     echo "---"
     if ! glab mr diff "${MR_ARGS[@]}" 2>/dev/null; then
